@@ -3,32 +3,65 @@
 import { useEffect, useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Plus, TrendingUp, TrendingDown, Wallet } from 'lucide-react'
+import { Plus, TrendingUp, TrendingDown, Wallet, Pencil, Trash2 } from 'lucide-react'
 import { useAuthStore, useBudgetStore } from '@/lib/store'
 import { budgetService } from '@/lib/services/budget.service'
 import { formatCurrency, formatDate } from '@/lib/utils'
+import { TransactionDialog } from '@/components/budget/transaction-dialog'
+import { getCategoryInfo } from '@/lib/constants/budget'
+import type { Transaction } from '@/lib/types/budget'
 
 export default function BudgetPage() {
   const user = useAuthStore((state) => state.user)
   const { transactions, setTransactions } = useBudgetStore()
   const [isLoading, setIsLoading] = useState(true)
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [dialogType, setDialogType] = useState<'income' | 'expense'>('expense')
+  const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null)
+
+  const loadTransactions = async () => {
+    if (!user) return
+
+    try {
+      setIsLoading(true)
+      const data = await budgetService.getTransactions(user.id)
+      setTransactions(data)
+    } catch (error) {
+      console.error('Error loading transactions:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   useEffect(() => {
-    const loadTransactions = async () => {
-      if (!user) return
-
-      try {
-        const data = await budgetService.getTransactions(user.id)
-        setTransactions(data)
-      } catch (error) {
-        console.error('Error loading transactions:', error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
     loadTransactions()
   }, [user, setTransactions])
+
+  const handleOpenDialog = (type: 'income' | 'expense', transaction?: Transaction) => {
+    setDialogType(type)
+    setEditingTransaction(transaction || null)
+    setDialogOpen(true)
+  }
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false)
+    setEditingTransaction(null)
+  }
+
+  const handleDialogSuccess = () => {
+    loadTransactions()
+  }
+
+  const handleDeleteTransaction = async (id: string) => {
+    if (!confirm('Möchtest du diese Transaktion wirklich löschen?')) return
+
+    try {
+      await budgetService.deleteTransaction(id)
+      loadTransactions()
+    } catch (error) {
+      console.error('Error deleting transaction:', error)
+    }
+  }
 
   const calculateStats = () => {
     const income = transactions
@@ -67,11 +100,11 @@ export default function BudgetPage() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button>
+          <Button onClick={() => handleOpenDialog('income')}>
             <Plus className="mr-2 h-4 w-4" />
             Einnahme
           </Button>
-          <Button variant="destructive">
+          <Button variant="destructive" onClick={() => handleOpenDialog('expense')}>
             <Plus className="mr-2 h-4 w-4" />
             Ausgabe
           </Button>
@@ -145,11 +178,11 @@ export default function BudgetPage() {
                 Füge deine erste Einnahme oder Ausgabe hinzu, um zu beginnen.
               </p>
               <div className="mt-6 flex gap-2 justify-center">
-                <Button>
+                <Button onClick={() => handleOpenDialog('income')}>
                   <Plus className="mr-2 h-4 w-4" />
                   Einnahme hinzufügen
                 </Button>
-                <Button variant="outline">
+                <Button variant="outline" onClick={() => handleOpenDialog('expense')}>
                   <Plus className="mr-2 h-4 w-4" />
                   Ausgabe hinzufügen
                 </Button>
@@ -157,34 +190,68 @@ export default function BudgetPage() {
             </div>
           ) : (
             <div className="space-y-2">
-              {transactions.slice(0, 10).map((transaction) => (
-                <div
-                  key={transaction.id}
-                  className="flex items-center justify-between p-4 rounded-lg border hover:bg-muted/50 transition-colors"
-                >
-                  <div className="flex items-center gap-4">
-                    <div
-                      className={`w-2 h-12 rounded-full ${transaction.type === 'income' ? 'bg-success' : 'bg-destructive'}`}
-                    />
-                    <div>
-                      <p className="font-medium">{transaction.description}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {formatDate(transaction.date)} • {transaction.category}
+              {transactions.slice(0, 10).map((transaction) => {
+                const categoryInfo = getCategoryInfo(transaction.category, transaction.type)
+                const CategoryIcon = categoryInfo.icon
+
+                return (
+                  <div
+                    key={transaction.id}
+                    className="flex items-center justify-between p-4 rounded-lg border hover:bg-muted/50 transition-colors group"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div
+                        className={`w-10 h-10 rounded-full flex items-center justify-center ${transaction.type === 'income' ? 'bg-success/10' : 'bg-destructive/10'}`}
+                      >
+                        <CategoryIcon className={`h-5 w-5 ${categoryInfo.color}`} />
+                      </div>
+                      <div>
+                        <p className="font-medium">{transaction.description}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {formatDate(transaction.date)} • {categoryInfo.label}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <p
+                        className={`text-lg font-semibold ${transaction.type === 'income' ? 'text-success' : 'text-destructive'}`}
+                      >
+                        {transaction.type === 'income' ? '+' : '-'}
+                        {formatCurrency(transaction.amount)}
                       </p>
+                      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleOpenDialog(transaction.type, transaction)}
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleDeleteTransaction(transaction.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
                   </div>
-                  <p
-                    className={`text-lg font-semibold ${transaction.type === 'income' ? 'text-success' : 'text-destructive'}`}
-                  >
-                    {transaction.type === 'income' ? '+' : '-'}
-                    {formatCurrency(transaction.amount)}
-                  </p>
-                </div>
-              ))}
+                )
+              })}
             </div>
           )}
         </CardContent>
       </Card>
+
+      {/* Transaction Dialog */}
+      <TransactionDialog
+        open={dialogOpen}
+        onOpenChange={handleCloseDialog}
+        transaction={editingTransaction}
+        defaultType={dialogType}
+        onSuccess={handleDialogSuccess}
+      />
     </div>
   )
 }
