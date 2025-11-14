@@ -136,15 +136,33 @@ npm install
 
 ### 4. Datenbank einrichten
 
+#### Option A: Automatisches Setup-Script (empfohlen)
+
+```bash
+# Macht das Setup-Script ausführbar (nur einmal nötig)
+chmod +x scripts/setup-env.sh
+
+# Führe das Setup-Script aus
+./scripts/setup-env.sh
+```
+
+Das Script fragt dich nach deinen Supabase-Credentials und erstellt automatisch die `.env.local` Datei.
+
+#### Option B: Manuelle Einrichtung
+
 1. Öffne den **SQL Editor** in Supabase
-2. Kopiere den Inhalt von `../supabase/schema.sql` (aus dem Mobile-Projekt)
-3. Führe das SQL-Skript aus
+2. Kopiere den gesamten Inhalt von `supabase/schema.sql`
+3. Führe das SQL-Skript aus (RUN oder Ctrl/Cmd + Enter)
+4. Optional: Führe `supabase/seed.sql` aus für 10 Beispiel-Rezepte
 
 Das Schema erstellt automatisch:
-- Alle Tabellen (users, transactions, budgets, savings_goals, recipes, etc.)
-- Row Level Security (RLS) Policies
-- Database Triggers
-- 300+ Sample Recipes
+- ✅ Alle Tabellen (profiles, transactions, budgets, savings_goals, recipes, calendar_events, etc.)
+- ✅ Row Level Security (RLS) Policies für Datensicherheit
+- ✅ Database Triggers für auto-update timestamps
+- ✅ Auto-Profile-Erstellung bei User-Registrierung
+- ✅ 10 deutsche Beispiel-Rezepte (via seed.sql)
+
+📖 **Detaillierte Anleitung:** Siehe `supabase/README.md`
 
 ## ⚙️ Konfiguration
 
@@ -265,6 +283,14 @@ standby-web/
 │       │   ├── recipe.ts
 │       │   └── calendar.ts
 │       └── utils.ts             # Utility Functions
+│
+├── supabase/                    # Database Schema & Seeds
+│   ├── schema.sql              # Complete database schema with RLS
+│   ├── seed.sql                # 10 sample recipes
+│   └── README.md               # Database setup guide
+│
+├── scripts/                     # Utility Scripts
+│   └── setup-env.sh            # Interactive environment setup
 │
 ├── public/                      # Static Assets
 ├── .env.example                 # Environment Variables Template
