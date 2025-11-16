@@ -19,7 +19,7 @@ export const budgetService = {
       type: item.type,
       amount: parseFloat(item.amount),
       category: item.category,
-      description: item.description || item.title,
+      description: item.description,
       date: item.date,
       createdAt: item.created_at,
       updatedAt: item.updated_at,
@@ -41,7 +41,7 @@ export const budgetService = {
       type: data.type,
       amount: parseFloat(data.amount),
       category: data.category,
-      description: data.description || data.title,
+      description: data.description,
       date: data.date,
       createdAt: data.created_at,
       updatedAt: data.updated_at,
@@ -53,7 +53,6 @@ export const budgetService = {
       .from('transactions')
       .insert({
         user_id: transaction.userId,
-        title: transaction.description,
         description: transaction.description,
         type: transaction.type,
         amount: transaction.amount,
@@ -71,7 +70,7 @@ export const budgetService = {
       type: data.type,
       amount: parseFloat(data.amount),
       category: data.category,
-      description: data.description || data.title,
+      description: data.description,
       date: data.date,
       createdAt: data.created_at,
       updatedAt: data.updated_at,
@@ -84,7 +83,6 @@ export const budgetService = {
     }
 
     if (updates.description) {
-      dbUpdates.title = updates.description
       dbUpdates.description = updates.description
     }
     if (updates.amount !== undefined) dbUpdates.amount = updates.amount
@@ -107,7 +105,7 @@ export const budgetService = {
       type: data.type,
       amount: parseFloat(data.amount),
       category: data.category,
-      description: data.description || data.title,
+      description: data.description,
       date: data.date,
       createdAt: data.created_at,
       updatedAt: data.updated_at,
