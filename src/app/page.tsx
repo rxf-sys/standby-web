@@ -18,10 +18,10 @@ export default function LandingPage() {
           </p>
           <div className="flex gap-4 justify-center">
             <Button asChild size="lg">
-              <Link href="/auth/register">Jetzt starten</Link>
+              <Link href="/register">Jetzt starten</Link>
             </Button>
             <Button asChild size="lg" variant="outline">
-              <Link href="/auth/login">Anmelden</Link>
+              <Link href="/login">Anmelden</Link>
             </Button>
           </div>
         </div>
@@ -84,7 +84,7 @@ export default function LandingPage() {
             Erstelle jetzt dein kostenloses Konto und starte in dein selbstständiges Leben
           </p>
           <Button asChild size="lg">
-            <Link href="/auth/register">Kostenlos registrieren</Link>
+            <Link href="/register">Kostenlos registrieren</Link>
           </Button>
         </div>
       </div>

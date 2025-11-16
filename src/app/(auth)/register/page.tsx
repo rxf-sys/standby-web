@@ -60,7 +60,7 @@ export default function RegisterPage() {
       })
 
       setTimeout(() => {
-        router.push('/auth/login')
+        router.push('/login')
       }, 2000)
     } catch (error: any) {
       toast({
@@ -136,7 +136,7 @@ export default function RegisterPage() {
           </form>
           <div className="mt-6 text-center text-sm">
             <span className="text-muted-foreground">Bereits ein Konto? </span>
-            <Link href="/auth/login" className="text-primary hover:underline font-medium">
+            <Link href="/login" className="text-primary hover:underline font-medium">
               Jetzt anmelden
             </Link>
           </div>

@@ -95,7 +95,7 @@ export default function LoginPage() {
           </form>
           <div className="mt-6 text-center text-sm">
             <span className="text-muted-foreground">Noch kein Konto? </span>
-            <Link href="/auth/register" className="text-primary hover:underline font-medium">
+            <Link href="/register" className="text-primary hover:underline font-medium">
               Jetzt registrieren
             </Link>
           </div>
