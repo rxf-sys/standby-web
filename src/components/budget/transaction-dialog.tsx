@@ -31,6 +31,7 @@ import { transactionSchema, type TransactionFormData } from '@/lib/validations/b
 import { EXPENSE_CATEGORY_OPTIONS, INCOME_SOURCE_OPTIONS } from '@/lib/constants/budget'
 import type { Transaction } from '@/lib/types/budget'
 import { budgetService } from '@/lib/services/budget.service'
+import { useAuthStore } from '@/lib/store'
 
 interface TransactionDialogProps {
   open: boolean
@@ -42,6 +43,7 @@ interface TransactionDialogProps {
 
 export function TransactionDialog({ open, onOpenChange, transaction, defaultType = 'expense', onSuccess }: TransactionDialogProps) {
   const { toast } = useToast()
+  const { user } = useAuthStore()
   const [isLoading, setIsLoading] = useState(false)
 
   const {
@@ -103,6 +105,15 @@ export function TransactionDialog({ open, onOpenChange, transaction, defaultType
   }, [transactionType, selectedCategory, setValue])
 
   const onSubmit = async (data: TransactionFormData) => {
+    if (!user) {
+      toast({
+        title: 'Fehler',
+        description: 'Du musst angemeldet sein, um eine Transaktion zu erstellen.',
+        variant: 'destructive',
+      })
+      return
+    }
+
     try {
       setIsLoading(true)
 
@@ -115,7 +126,10 @@ export function TransactionDialog({ open, onOpenChange, transaction, defaultType
         })
       } else {
         // Create new transaction
-        await budgetService.createTransaction(data)
+        await budgetService.createTransaction({
+          ...data,
+          userId: user.id,
+        })
         toast({
           title: 'Transaktion erstellt',
           description: 'Die Transaktion wurde erfolgreich erstellt.',
