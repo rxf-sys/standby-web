@@ -23,7 +23,13 @@ export default defineConfig({
       ],
     },
     include: ['src/**/*.{test,spec}.{js,ts,jsx,tsx}'],
-    exclude: ['node_modules', 'dist', '.next', 'coverage'],
+    exclude: [
+      'node_modules',
+      'dist',
+      '.next',
+      'coverage',
+      'src/__tests__/e2e/**', // E2E tests are run by Playwright, not Vitest
+    ],
   },
   resolve: {
     alias: {
