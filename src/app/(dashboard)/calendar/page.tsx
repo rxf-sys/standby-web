@@ -7,6 +7,7 @@ import { Calendar as CalendarIcon, Plus, Filter } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { EventCard } from '@/components/calendar/event-card'
+import { EventDialog } from '@/components/calendar/event-dialog'
 import { useAuthStore, useCalendarStore } from '@/lib/store'
 import { calendarService } from '@/lib/services/calendar.service'
 import { EVENT_CATEGORY_OPTIONS } from '@/lib/constants/calendar'
@@ -16,24 +17,40 @@ export default function CalendarPage() {
   const user = useAuthStore((state) => state.user)
   const { events, filters, setEvents, toggleCategoryFilter } = useCalendarStore()
   const [isLoading, setIsLoading] = useState(true)
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [editingEvent, setEditingEvent] = useState<CalendarEvent | null>(null)
+
+  const loadEvents = async () => {
+    if (!user) return
+
+    try {
+      setIsLoading(true)
+      const data = await calendarService.getEvents(user.id, filters)
+      setEvents(data)
+    } catch (error) {
+      console.error('Error loading events:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   useEffect(() => {
-    const loadEvents = async () => {
-      if (!user) return
-
-      try {
-        setIsLoading(true)
-        const data = await calendarService.getEvents(user.id, filters)
-        setEvents(data)
-      } catch (error) {
-        console.error('Error loading events:', error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
     loadEvents()
   }, [user, filters, setEvents])
+
+  const handleOpenDialog = (event?: CalendarEvent) => {
+    setEditingEvent(event || null)
+    setDialogOpen(true)
+  }
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false)
+    setEditingEvent(null)
+  }
+
+  const handleDialogSuccess = () => {
+    loadEvents()
+  }
 
   const handleDeleteEvent = async (id: string) => {
     if (!confirm('Möchtest du diesen Termin wirklich löschen?')) return
@@ -86,7 +103,7 @@ export default function CalendarPage() {
             {events.length} {events.length === 1 ? 'Termin' : 'Termine'}
           </p>
         </div>
-        <Button disabled>
+        <Button onClick={() => handleOpenDialog()}>
           <Plus className="mr-2 h-4 w-4" />
           Termin hinzufügen
         </Button>
@@ -155,7 +172,7 @@ export default function CalendarPage() {
                 <CardDescription className="text-center max-w-md mb-6">
                   Du hast noch keine Termine erstellt. Füge deinen ersten Termin hinzu, um loszulegen.
                 </CardDescription>
-                <Button disabled>
+                <Button onClick={() => handleOpenDialog()}>
                   <Plus className="mr-2 h-4 w-4" />
                   Termin hinzufügen
                 </Button>
@@ -183,6 +200,7 @@ export default function CalendarPage() {
                         <EventCard
                           key={event.id}
                           event={event}
+                          onEdit={handleOpenDialog}
                           onDelete={handleDeleteEvent}
                         />
                       ))}
@@ -194,6 +212,14 @@ export default function CalendarPage() {
           )}
         </div>
       </div>
+
+      {/* Event Dialog */}
+      <EventDialog
+        open={dialogOpen}
+        onOpenChange={handleCloseDialog}
+        event={editingEvent}
+        onSuccess={handleDialogSuccess}
+      />
     </div>
   )
 }

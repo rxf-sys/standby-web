@@ -75,7 +75,7 @@ export function RecipeCard({ recipe, onFavoriteToggle }: RecipeCardProps) {
   }
 
   const handleCardClick = () => {
-    router.push(`/recipes/${recipe.id}`)
+    router.push(`/dashboard/recipes/${recipe.id}`)
   }
 
   return (
