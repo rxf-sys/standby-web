@@ -8,6 +8,8 @@ import { useAuthStore, useBudgetStore } from '@/lib/store'
 import { budgetService } from '@/lib/services/budget.service'
 import { formatCurrency, formatDate } from '@/lib/utils'
 import { TransactionDialog } from '@/components/budget/transaction-dialog'
+import { SpendingChart } from '@/components/budget/spending-chart'
+import { IncomeVsExpensesChart } from '@/components/budget/income-vs-expenses-chart'
 import { getCategoryInfo } from '@/lib/constants/budget'
 import type { Transaction } from '@/lib/types/budget'
 
@@ -158,6 +160,14 @@ export default function BudgetPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Charts */}
+      {transactions.length > 0 && (
+        <div className="grid gap-4 md:grid-cols-2">
+          <IncomeVsExpensesChart transactions={transactions} />
+          <SpendingChart transactions={transactions} />
+        </div>
+      )}
 
       {/* Transactions List */}
       <Card>
