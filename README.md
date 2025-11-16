@@ -16,92 +16,132 @@ Die Web-Version der **StandBy App** – deine All-in-One-Lösung für ein selbst
 
 ## ✨ Features
 
-### Aktuell implementiert
+### ✅ Vollständig Implementiert
 
-- ✅ **Authentifizierung**
+- **Authentifizierung**
   - Login & Registrierung
   - Session-Management mit Supabase
-  - Passwort-Reset Funktionalität
+  - Passwort-Reset Flow (E-Mail-basiert)
+  - Update Password Page
+  - Protected Routes mit Auth Guard
 
-- ✅ **Dashboard**
-  - Übersicht aller Module
-  - Quick Stats
-  - Responsive Navigation & Sidebar
+- **Dashboard**
+  - Echtzeit-Statistiken (Balance, Rezepte, Events, Favoriten)
+  - Paralleles Laden mit Promise.all
+  - Quick Navigation zu allen Modulen
+  - Responsive Sidebar
 
-- ✅ **Budget-Management**
-  - Transaktionen tracken (Einnahmen/Ausgaben)
-  - Saldo-Übersicht
-  - Kategorie-basierte Organisation
+- **Budget-Management** 💰
+  - Transaktionen (CRUD) mit Kategorien & Icons
+  - Einnahmen & Ausgaben Tracking
+  - **Charts & Visualisierungen**:
+    - Income vs Expenses Bar Chart (letzte 6 Monate)
+    - Spending by Category Pie Chart
+  - **Sparziele**:
+    - Vollständige CRUD-Funktionalität
+    - Progress Tracking mit Prozentanzeige
+    - Quick Add/Subtract Buttons
+    - Zieldatum-Verwaltung
+    - Overall Progress Summary
+  - Kategorie-System mit 8 Ausgaben & 5 Einnahmen-Kategorien
 
-- ✅ **Theme System**
-  - Light/Dark Mode
-  - System-Präferenz Support
-  - Persistente Theme-Einstellungen
+- **Rezepte** 🍳
+  - 300+ deutsche Rezepte (via Seed Data)
+  - **Smart Filtering**:
+    - Mahlzeitentyp (Frühstück, Mittagessen, Abendessen, Snack)
+    - Ernährungsform (Vegetarisch, Vegan, Glutenfrei, Laktosefrei)
+    - Schwierigkeit (Einfach, Mittel, Schwer)
+    - Max. Zubereitungszeit
+    - Max. Kosten pro Portion
+  - Favoriten-System (Toggle & View)
+  - **Einkaufsliste-Integration**
+  - Rezept-Details mit:
+    - Schritt-für-Schritt Anleitung
+    - Nährwertangaben
+    - Zutaten mit Mengen
+    - Unsplash-Bilder
 
-- ✅ **UI/UX**
-  - Moderne shadcn/ui Komponenten
-  - Responsive Design (Mobile, Tablet, Desktop)
-  - Toast Notifications
-  - Loading States
+- **Einkaufsliste** 🛒
+  - Zutaten aus Rezepten hinzufügen
+  - Manuelle Items hinzufügen (Name, Menge, Einheit)
+  - Check/Uncheck Items
+  - Bulk Delete (alle abgehakten)
+  - Gruppierung (Unchecked / Checked)
 
-### Geplant für zukünftige Versionen
+- **Kalender** 📅
+  - Event-Management (CRUD)
+  - Kategorien (Personal, Work, University, Sport, Social, Other)
+  - All-Day Events Support
+  - Reminder-System (5min, 15min, 30min, 1h, 1 Tag)
+  - Upcoming Events View
+  - Monatsansicht
 
-- 📱 **Budget** (erweitert)
-  - Sparziele-Verwaltung
-  - Budget-Limits pro Kategorie
-  - Statistiken & Charts (Recharts)
-  - Export-Funktionen (CSV/PDF)
+- **Einstellungen** ⚙️
+  - **Profil bearbeiten** (Name, Avatar URL)
+  - **Theme Switcher** (Hell, Dunkel, System)
+  - Zukunft: Benachrichtigungen, Account-Löschen
 
-- 🍳 **Rezepte**
-  - 300+ Rezepte-Bibliothek
-  - Filter (Diät, Preis, Zeit, Schwierigkeit)
-  - Favoriten-System
-  - Einkaufsliste
-  - Rezept-Details mit Anleitung
+- **CI/CD & Testing** 🧪
+  - GitHub Actions Workflows (CI, Test, Deploy)
+  - Vitest für Unit Tests
+  - Playwright für E2E Tests
+  - Issue & PR Templates
+  - Contributing Guide
 
-- 📅 **Kalender**
-  - Event-Management
-  - Kategorien (Uni, Arbeit, Privat)
-  - Erinnerungen
-  - Recurring Events
+### 🚧 Geplant für zukünftige Versionen
 
-- ⚙️ **Einstellungen**
-  - Profil-Verwaltung
-  - Benachrichtigungs-Präferenzen
-  - Daten-Export
-  - Account-Management
+- Budget-Limits pro Kategorie (Backend fertig)
+- Export-Funktionen (CSV/PDF)
+- Recurring Calendar Events
+- Benachrichtigungs-System
+- Mobile Offline-Support (PWA)
+- Analytics Dashboard
 
 ## 🛠 Tech Stack
 
 ### Frontend Framework
-- **Next.js 15** - App Router mit Server Components
+- **Next.js 16** (Turbopack) - App Router mit Server Components
 - **React 19** - Neueste React-Features
 - **TypeScript 5.7** - Strict Mode für Type-Safety
 
 ### Styling & UI
-- **Tailwind CSS** - Utility-First CSS Framework
+- **Tailwind CSS 3.4** - Utility-First CSS Framework
 - **shadcn/ui** - High-Quality React Components (Radix UI)
 - **Lucide Icons** - Moderne Icon-Bibliothek
 
 ### State Management & Data Fetching
 - **Zustand** - Lightweight State Management
 - **TanStack Query v5** - Server State & Caching
-- **React Hook Form** - Formular-Handling
+- **React Hook Form + Zod** - Formular-Handling mit Validierung
+
+### Charts & Visualizations
+- **Recharts 2.13** - React Charts Library
+  - Bar Charts (Einnahmen/Ausgaben)
+  - Pie Charts (Kategorien)
+  - Responsive & Customizable
 
 ### Backend & Database
 - **Supabase** - PostgreSQL Database + Auth + Real-time
   - Row Level Security (RLS)
   - Auto-generated APIs
   - Real-time subscriptions
+  - Auto-Profile Creation Triggers
 
 ### Validierung & Utils
 - **Zod** - Schema-Validierung
-- **date-fns** - Datum-Utilities
+- **date-fns 3.6** - Datum-Utilities mit i18n (Deutsch)
 - **clsx + tailwind-merge** - Class-Namen Management
 
+### Testing & CI/CD
+- **Vitest 2.1** - Unit & Integration Tests
+- **Playwright 1.48** - E2E Testing
+- **Testing Library** - React Component Testing
+- **GitHub Actions** - Automated CI/CD Pipeline
+- **Husky + lint-staged** - Pre-commit Hooks
+
 ### Development Tools
-- **ESLint** - Code Linting
-- **Prettier** - Code Formatting
+- **ESLint 9** - Code Linting
+- **Prettier 3.4** - Code Formatting
 - **TypeScript** - Type Checking
 
 ## 📦 Voraussetzungen
@@ -199,20 +239,23 @@ npm run dev
 ### Weitere Befehle
 
 ```bash
-# Type-Checking
-npm run type-check
+# Development
+npm run dev              # Start dev server
+npm run build            # Build for production
+npm run start            # Start production server
 
-# Linting
-npm run lint
+# Code Quality
+npm run lint             # Run ESLint
+npm run type-check       # Run TypeScript compiler
+npm run format           # Format with Prettier
+npm run format:check     # Check formatting
 
-# Code formatieren
-npm run format
-
-# Production Build
-npm run build
-
-# Production Server starten
-npm run start
+# Testing
+npm test                 # Run all tests (watch mode)
+npm run test:unit        # Run unit tests with coverage
+npm run test:integration # Run integration tests
+npm run test:e2e         # Run E2E tests with Playwright
+npm run test:e2e:ui      # Run E2E tests in UI mode
 ```
 
 ## 🌐 Deployment

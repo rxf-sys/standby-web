@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
@@ -7,10 +8,12 @@ import { Input } from '@/components/ui/input'
 import { useAuthStore, useThemeStore } from '@/lib/store'
 import { Settings as SettingsIcon, Moon, Sun, Monitor } from 'lucide-react'
 import { ThemeMode } from '@/lib/store/theme.store'
+import { ProfileEditDialog } from '@/components/settings/profile-edit-dialog'
 
 export default function SettingsPage() {
   const user = useAuthStore((state) => state.user)
   const { themeMode, setThemeMode } = useThemeStore()
+  const [profileDialogOpen, setProfileDialogOpen] = useState(false)
 
   const themes: { value: ThemeMode; label: string; icon: React.ReactNode }[] = [
     { value: 'light', label: 'Hell', icon: <Sun className="h-4 w-4" /> },
@@ -40,11 +43,20 @@ export default function SettingsPage() {
             <Label htmlFor="email">E-Mail</Label>
             <Input id="email" type="email" value={user?.email || ''} disabled />
           </div>
-          <Button variant="outline" disabled>
+          <Button variant="outline" onClick={() => setProfileDialogOpen(true)}>
             Profil bearbeiten
           </Button>
         </CardContent>
       </Card>
+
+      {/* Profile Edit Dialog */}
+      {user && (
+        <ProfileEditDialog
+          open={profileDialogOpen}
+          onOpenChange={setProfileDialogOpen}
+          user={user}
+        />
+      )}
 
       {/* Theme Settings */}
       <Card>
