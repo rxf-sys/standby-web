@@ -17,7 +17,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
         const session = await authService.getSession()
 
         if (!session) {
-          router.push('/auth/login')
+          router.push('/login')
           return
         }
 
@@ -25,11 +25,11 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
         if (currentUser) {
           login(currentUser)
         } else {
-          router.push('/auth/login')
+          router.push('/login')
         }
       } catch (error) {
         console.error('Auth check failed:', error)
-        router.push('/auth/login')
+        router.push('/login')
       } finally {
         setLoading(false)
         setIsChecking(false)
