@@ -65,7 +65,7 @@ export const authService = {
 
     // Get user profile data
     const { data: profile, error: profileError } = await supabase
-      .from('users')
+      .from('profiles')
       .select('*')
       .eq('id', data.user.id)
       .single()
@@ -87,7 +87,7 @@ export const authService = {
    */
   async updateProfile(userId: string, updates: Partial<User>) {
     const { data, error } = await supabase
-      .from('users')
+      .from('profiles')
       .update({
         name: updates.name,
         avatar_url: updates.avatarUrl,
@@ -115,7 +115,7 @@ export const authService = {
   async resetPassword(email: string) {
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${appUrl}/auth/reset-password`,
+      redirectTo: `${appUrl}/reset-password`,
     })
 
     if (error) throw error
