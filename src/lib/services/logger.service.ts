@@ -60,14 +60,14 @@ class LoggerService {
    * Send logs to external service in production
    * TODO: Implement actual integration with Sentry, LogRocket, etc.
    */
-  private sendToExternalService(level: LogLevel, message: string, context?: LogContext): void {
+  private sendToExternalService(_level: LogLevel, _message: string, _context?: LogContext): void {
     if (!this.isDevelopment) {
       // TODO: Integrate with production logging service
       // Example for Sentry:
-      // if (level === 'error') {
-      //   Sentry.captureException(new Error(message), { extra: context })
+      // if (_level === 'error') {
+      //   Sentry.captureException(new Error(_message), { extra: _context })
       // } else {
-      //   Sentry.captureMessage(message, { level, extra: context })
+      //   Sentry.captureMessage(_message, { level: _level, extra: _context })
       // }
     }
   }
