@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Plus, TrendingUp, TrendingDown, Wallet, Pencil, Trash2 } from 'lucide-react'
+import { logger } from '@/lib/services/logger.service'
 import { useAuthStore, useBudgetStore } from '@/lib/store'
 import { budgetService } from '@/lib/services/budget.service'
 import { formatCurrency, formatDate } from '@/lib/utils'
@@ -29,7 +30,7 @@ export default function BudgetPage() {
       const data = await budgetService.getTransactions(user.id)
       setTransactions(data)
     } catch (error) {
-      console.error('Error loading transactions:', error)
+      logger.error('Error loading transactions:', error)
     } finally {
       setIsLoading(false)
     }
@@ -61,7 +62,7 @@ export default function BudgetPage() {
       await budgetService.deleteTransaction(id)
       loadTransactions()
     } catch (error) {
-      console.error('Error deleting transaction:', error)
+      logger.error('Error deleting transaction:', error)
     }
   }
 

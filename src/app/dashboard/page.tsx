@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { startOfDay, endOfDay, isToday, parseISO } from 'date-fns'
+import { isToday, parseISO } from 'date-fns'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Wallet, ChefHat, Calendar, TrendingUp, ArrowRight } from 'lucide-react'
+import { logger } from '@/lib/services/logger.service'
 import { useAuthStore } from '@/lib/store'
 import { budgetService } from '@/lib/services/budget.service'
 import { recipeService } from '@/lib/services/recipe.service'
@@ -56,7 +57,7 @@ export default function DashboardPage() {
           favoriteRecipes: favorites.length,
         })
       } catch (error) {
-        console.error('Error loading dashboard stats:', error)
+        logger.error('Error loading dashboard stats:', error)
       } finally {
         setIsLoading(false)
       }

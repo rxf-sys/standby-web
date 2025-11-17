@@ -1,11 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { ShoppingCart, Plus, Trash2, CheckCheck } from 'lucide-react'
+import { ShoppingCart, Plus, CheckCheck } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { logger } from '@/lib/services/logger.service'
 import { ShoppingListItemComponent } from '@/components/recipes/shopping-list-item'
 import { useAuthStore, useRecipeStore } from '@/lib/store'
 import { recipeService } from '@/lib/services/recipe.service'
@@ -32,7 +33,7 @@ export default function ShoppingListPage() {
         const data = await recipeService.getShoppingList(user.id)
         setShoppingList(data)
       } catch (error) {
-        console.error('Error loading shopping list:', error)
+        logger.error('Error loading shopping list:', error)
         toast({
           title: 'Fehler',
           description: 'Einkaufsliste konnte nicht geladen werden.',
@@ -51,7 +52,7 @@ export default function ShoppingListPage() {
       await recipeService.toggleShoppingListItem(id, checked)
       updateShoppingListItem(id, checked)
     } catch (error) {
-      console.error('Error toggling item:', error)
+      logger.error('Error toggling item:', error)
       toast({
         title: 'Fehler',
         description: 'Änderung konnte nicht gespeichert werden.',
@@ -69,7 +70,7 @@ export default function ShoppingListPage() {
         description: 'Artikel wurde von der Einkaufsliste entfernt.',
       })
     } catch (error) {
-      console.error('Error deleting item:', error)
+      logger.error('Error deleting item:', error)
       toast({
         title: 'Fehler',
         description: 'Artikel konnte nicht gelöscht werden.',
@@ -98,7 +99,7 @@ export default function ShoppingListPage() {
         description: `${item.name} wurde zur Einkaufsliste hinzugefügt.`,
       })
     } catch (error) {
-      console.error('Error adding item:', error)
+      logger.error('Error adding item:', error)
       toast({
         title: 'Fehler',
         description: 'Artikel konnte nicht hinzugefügt werden.',
@@ -121,7 +122,7 @@ export default function ShoppingListPage() {
         description: 'Alle erledigten Artikel wurden entfernt.',
       })
     } catch (error) {
-      console.error('Error clearing list:', error)
+      logger.error('Error clearing list:', error)
       toast({
         title: 'Fehler',
         description: 'Erledigte Artikel konnten nicht entfernt werden.',

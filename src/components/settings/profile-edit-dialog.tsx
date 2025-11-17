@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Loader2 } from 'lucide-react'
 
+import { logger } from '@/lib/services/logger.service'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -79,7 +80,7 @@ export function ProfileEditDialog({ open, onOpenChange, user }: ProfileEditDialo
 
       onOpenChange(false)
     } catch (error: any) {
-      console.error('Error updating profile:', error)
+      logger.error('Error updating profile:', error)
       toast({
         title: 'Fehler',
         description: error.message || 'Profil konnte nicht aktualisiert werden.',

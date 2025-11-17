@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { ArrowLeft, Clock, Euro, ChefHat, Heart, ShoppingCart, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { logger } from '@/lib/services/logger.service'
 import { useToast } from '@/lib/hooks/use-toast'
 import { recipeService } from '@/lib/services/recipe.service'
 import { useAuthStore } from '@/lib/store'
@@ -43,7 +44,7 @@ export default function RecipeDetailPage() {
           setIsFavorite(favStatus)
         }
       } catch (error) {
-        console.error('Error loading recipe:', error)
+        logger.error('Error loading recipe:', error)
         toast({
           title: 'Fehler',
           description: 'Rezept konnte nicht geladen werden.',
@@ -79,7 +80,7 @@ export default function RecipeDetailPage() {
           : `${recipe.title} wurde aus deinen Favoriten entfernt.`,
       })
     } catch (error) {
-      console.error('Error toggling favorite:', error)
+      logger.error('Error toggling favorite:', error)
       toast({
         title: 'Fehler',
         description: 'Favorit konnte nicht gespeichert werden.',
@@ -109,7 +110,7 @@ export default function RecipeDetailPage() {
         description: `Alle Zutaten für "${recipe.title}" wurden zur Einkaufsliste hinzugefügt.`,
       })
     } catch (error) {
-      console.error('Error adding to shopping list:', error)
+      logger.error('Error adding to shopping list:', error)
       toast({
         title: 'Fehler',
         description: 'Zutaten konnten nicht hinzugefügt werden.',

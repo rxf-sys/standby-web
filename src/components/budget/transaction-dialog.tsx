@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
-import { de } from 'date-fns/locale'
 import { Loader2 } from 'lucide-react'
 
+import { logger } from '@/lib/services/logger.service'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -58,7 +58,7 @@ export function TransactionDialog({ open, onOpenChange, transaction, defaultType
     defaultValues: {
       type: defaultType,
       amount: 0,
-      category: '',
+      category: 'other',
       description: '',
       date: format(new Date(), 'yyyy-MM-dd'),
     },
@@ -84,7 +84,7 @@ export function TransactionDialog({ open, onOpenChange, transaction, defaultType
         reset({
           type: defaultType,
           amount: 0,
-          category: '',
+          category: 'other',
           description: '',
           date: format(new Date(), 'yyyy-MM-dd'),
         })
@@ -99,7 +99,7 @@ export function TransactionDialog({ open, onOpenChange, transaction, defaultType
       const categories = transactionType === 'expense' ? EXPENSE_CATEGORY_OPTIONS : INCOME_SOURCE_OPTIONS
       const isValid = categories.some((cat) => cat.value === selectedCategory)
       if (!isValid) {
-        setValue('category', '')
+        setValue('category', 'other')
       }
     }
   }, [transactionType, selectedCategory, setValue])
@@ -139,7 +139,7 @@ export function TransactionDialog({ open, onOpenChange, transaction, defaultType
       onOpenChange(false)
       onSuccess?.()
     } catch (error) {
-      console.error('Error saving transaction:', error)
+      logger.error('Error saving transaction:', error)
       toast({
         title: 'Fehler',
         description: 'Die Transaktion konnte nicht gespeichert werden.',
@@ -155,7 +155,7 @@ export function TransactionDialog({ open, onOpenChange, transaction, defaultType
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit as any)}>
           <DialogHeader>
             <DialogTitle>{transaction ? 'Transaktion bearbeiten' : 'Neue Transaktion'}</DialogTitle>
             <DialogDescription>
@@ -184,7 +184,7 @@ export function TransactionDialog({ open, onOpenChange, transaction, defaultType
             {/* Category Selection */}
             <div className="grid gap-2">
               <Label htmlFor="category">Kategorie</Label>
-              <Select value={selectedCategory} onValueChange={(value) => setValue('category', value)}>
+              <Select value={selectedCategory} onValueChange={(value) => setValue('category', value as 'food' | 'transport' | 'housing' | 'entertainment' | 'health' | 'education' | 'shopping' | 'other' | 'salary' | 'freelance' | 'allowance' | 'investment')}>
                 <SelectTrigger id="category">
                   <SelectValue placeholder="Wähle eine Kategorie" />
                 </SelectTrigger>

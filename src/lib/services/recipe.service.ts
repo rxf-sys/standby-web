@@ -1,6 +1,5 @@
 import { supabase } from './supabase'
 import type { Recipe, RecipeFilter, ShoppingListItem, Ingredient } from '@/lib/types/recipe'
-import { useAuthStore } from '@/lib/store'
 
 export const recipeService = {
   // Get all recipes with optional filters

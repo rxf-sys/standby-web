@@ -23,7 +23,7 @@ export default function LoginPage() {
     setIsLoading(true)
 
     try {
-      const { user: authUser } = await authService.signIn(email, password)
+      await authService.signIn(email, password)
       const user = await authService.getCurrentUser()
 
       if (user) {

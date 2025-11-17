@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { Loader2 } from 'lucide-react'
 
+import { logger } from '@/lib/services/logger.service'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -145,7 +146,7 @@ export function EventDialog({ open, onOpenChange, event, onSuccess }: EventDialo
       onOpenChange(false)
       onSuccess?.()
     } catch (error) {
-      console.error('Error saving event:', error)
+      logger.error('Error saving event:', error)
       toast({
         title: 'Fehler',
         description: 'Der Termin konnte nicht gespeichert werden.',
@@ -159,7 +160,7 @@ export function EventDialog({ open, onOpenChange, event, onSuccess }: EventDialo
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[550px] max-h-[90vh] overflow-y-auto">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit as any)}>
           <DialogHeader>
             <DialogTitle>{event ? 'Termin bearbeiten' : 'Neuer Termin'}</DialogTitle>
             <DialogDescription>
@@ -202,7 +203,7 @@ export function EventDialog({ open, onOpenChange, event, onSuccess }: EventDialo
               <Label htmlFor="category">
                 Kategorie <span className="text-destructive">*</span>
               </Label>
-              <Select value={selectedCategory} onValueChange={(value) => setValue('category', value as any)}>
+              <Select value={selectedCategory} onValueChange={(value) => setValue('category', value as 'uni' | 'work' | 'personal' | 'health' | 'social' | 'other')}>
                 <SelectTrigger id="category">
                   <SelectValue placeholder="Wähle eine Kategorie" />
                 </SelectTrigger>
@@ -278,7 +279,7 @@ export function EventDialog({ open, onOpenChange, event, onSuccess }: EventDialo
             {/* Reminder */}
             <div className="grid gap-2">
               <Label htmlFor="reminder">Erinnerung</Label>
-              <Select value={selectedReminder} onValueChange={(value) => setValue('reminder', value as any)}>
+              <Select value={selectedReminder} onValueChange={(value) => setValue('reminder', value as 'none' | '5min' | '15min' | '30min' | '1hour' | '1day')}>
                 <SelectTrigger id="reminder">
                   <SelectValue placeholder="Erinnerung wählen" />
                 </SelectTrigger>
