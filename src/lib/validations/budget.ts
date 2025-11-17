@@ -12,7 +12,7 @@ export const transactionSchema = z.object({
     })
     .positive('Betrag muss größer als 0 sein')
     .max(1000000, 'Betrag ist zu hoch'),
-  category: z.string({
+  category: z.enum(['food', 'transport', 'housing', 'entertainment', 'health', 'education', 'shopping', 'other', 'salary', 'freelance', 'allowance', 'investment'], {
     required_error: 'Bitte wähle eine Kategorie aus',
   }),
   description: z
@@ -48,9 +48,7 @@ export const savingsGoalSchema = z.object({
       invalid_type_error: 'Bitte gib eine gültige Zahl ein',
     })
     .nonnegative('Betrag kann nicht negativ sein')
-    .max(10000000, 'Betrag ist zu hoch')
-    .optional()
-    .default(0),
+    .max(10000000, 'Betrag ist zu hoch'),
   targetDate: z.string().optional(),
 })
 

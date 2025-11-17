@@ -45,7 +45,7 @@ export interface SavingsGoal {
   name: string
   targetAmount: number
   currentAmount: number
-  targetDate: string
+  targetDate?: string
   createdAt: string
   updatedAt: string
 }

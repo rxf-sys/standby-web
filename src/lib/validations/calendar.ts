@@ -19,11 +19,9 @@ export const eventSchema = z
     endDate: z.string({
       required_error: 'Enddatum ist erforderlich',
     }),
-    isAllDay: z.boolean().default(false),
+    isAllDay: z.boolean(),
     location: z.string().max(200, 'Ort ist zu lang').optional(),
-    reminder: z
-      .enum(['none', '5min', '15min', '30min', '1hour', '1day'])
-      .default('none'),
+    reminder: z.enum(['none', '5min', '15min', '30min', '1hour', '1day']),
   })
   .refine((data) => new Date(data.endDate) >= new Date(data.startDate), {
     message: 'Enddatum muss nach dem Startdatum liegen',

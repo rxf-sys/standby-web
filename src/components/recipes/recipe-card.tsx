@@ -4,8 +4,9 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Heart, Clock, Euro, ChefHat } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { logger } from '@/lib/services/logger.service'
 import { useToast } from '@/lib/hooks/use-toast'
 import { recipeService } from '@/lib/services/recipe.service'
 import { useAuthStore } from '@/lib/store'
@@ -63,7 +64,7 @@ export function RecipeCard({ recipe, onFavoriteToggle }: RecipeCardProps) {
           : `${recipe.title} wurde aus deinen Favoriten entfernt.`,
       })
     } catch (error) {
-      console.error('Error toggling favorite:', error)
+      logger.error('Error toggling favorite:', error)
       toast({
         title: 'Fehler',
         description: 'Favorit konnte nicht gespeichert werden.',

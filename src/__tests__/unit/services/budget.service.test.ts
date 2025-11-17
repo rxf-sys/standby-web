@@ -1,6 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { budgetService } from '@/lib/services/budget.service'
-import type { Transaction, SavingsGoal } from '@/lib/types'
 
 // Mock Supabase
 vi.mock('@/lib/services/supabase', () => ({
@@ -20,8 +19,6 @@ vi.mock('@/lib/services/supabase', () => ({
 describe('Budget Service', () => {
   describe('getTransactions', () => {
     it('should fetch transactions for a user', async () => {
-      const userId = 'test-user-id'
-
       // This is a basic structure test
       // In a real scenario, you would mock the Supabase response
       expect(budgetService.getTransactions).toBeDefined()

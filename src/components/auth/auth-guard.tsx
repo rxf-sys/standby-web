@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { logger } from '@/lib/services/logger.service'
 import { useAuthStore } from '@/lib/store'
 import { authService } from '@/lib/services/auth.service'
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter()
-  const { user, isLoading, setUser, setLoading, login } = useAuthStore()
+  const { user, isLoading, setLoading, login } = useAuthStore()
   const [isChecking, setIsChecking] = useState(true)
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
           router.push('/login')
         }
       } catch (error) {
-        console.error('Auth check failed:', error)
+        logger.error('Auth check failed:', error)
         router.push('/login')
       } finally {
         setLoading(false)

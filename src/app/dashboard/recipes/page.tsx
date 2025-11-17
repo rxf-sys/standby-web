@@ -1,9 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { ChefHat, Heart, ListPlus } from 'lucide-react'
+import { ChefHat, Heart } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card'
+import { logger } from '@/lib/services/logger.service'
 import { RecipeCard } from '@/components/recipes/recipe-card'
 import { RecipeFilters } from '@/components/recipes/recipe-filters'
 import { useAuthStore, useRecipeStore } from '@/lib/store'
@@ -36,7 +37,7 @@ export default function RecipesPage() {
           setRecipes(data)
         }
       } catch (error) {
-        console.error('Error loading recipes:', error)
+        logger.error('Error loading recipes:', error)
       } finally {
         setIsLoading(false)
       }

@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { Filter, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -35,8 +34,6 @@ const difficultyOptions: { value: Difficulty; label: string }[] = [
 ]
 
 export function RecipeFilters({ filters, onFiltersChange }: RecipeFiltersProps) {
-  const [isExpanded, setIsExpanded] = useState(false)
-
   const toggleMealType = (type: MealType) => {
     const current = filters.mealType || []
     const updated = current.includes(type) ? current.filter((t) => t !== type) : [...current, type]

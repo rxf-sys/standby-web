@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { Loader2, Trash2 } from 'lucide-react'
 
+import { logger } from '@/lib/services/logger.service'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -88,8 +89,8 @@ export function SavingsGoalDialog({ open, onOpenChange, goal, onSuccess }: Savin
         await budgetService.updateSavingsGoal(goal.id, {
           name: data.name,
           targetAmount: data.targetAmount,
-          currentAmount: data.currentAmount || 0,
-          targetDate: data.targetDate || undefined,
+          currentAmount: data.currentAmount,
+          targetDate: data.targetDate,
         })
         toast({
           title: 'Sparziel aktualisiert',
@@ -100,8 +101,8 @@ export function SavingsGoalDialog({ open, onOpenChange, goal, onSuccess }: Savin
           userId: user.id,
           name: data.name,
           targetAmount: data.targetAmount,
-          currentAmount: data.currentAmount || 0,
-          targetDate: data.targetDate || undefined,
+          currentAmount: data.currentAmount,
+          targetDate: data.targetDate,
         })
         toast({
           title: 'Sparziel erstellt',
@@ -112,7 +113,7 @@ export function SavingsGoalDialog({ open, onOpenChange, goal, onSuccess }: Savin
       onOpenChange(false)
       onSuccess?.()
     } catch (error) {
-      console.error('Error saving savings goal:', error)
+      logger.error('Error saving savings goal:', error)
       toast({
         title: 'Fehler',
         description: 'Das Sparziel konnte nicht gespeichert werden.',
@@ -151,7 +152,7 @@ export function SavingsGoalDialog({ open, onOpenChange, goal, onSuccess }: Savin
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit as any)}>
           <DialogHeader>
             <DialogTitle>{goal ? 'Sparziel bearbeiten' : 'Neues Sparziel'}</DialogTitle>
             <DialogDescription>

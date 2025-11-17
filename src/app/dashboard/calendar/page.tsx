@@ -6,12 +6,13 @@ import { de } from 'date-fns/locale'
 import { Calendar as CalendarIcon, Plus, Filter } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { logger } from '@/lib/services/logger.service'
 import { EventCard } from '@/components/calendar/event-card'
 import { EventDialog } from '@/components/calendar/event-dialog'
 import { useAuthStore, useCalendarStore } from '@/lib/store'
 import { calendarService } from '@/lib/services/calendar.service'
 import { EVENT_CATEGORY_OPTIONS } from '@/lib/constants/calendar'
-import type { CalendarEvent, EventCategory } from '@/lib/types/calendar'
+import type { CalendarEvent } from '@/lib/types/calendar'
 
 export default function CalendarPage() {
   const user = useAuthStore((state) => state.user)
@@ -28,7 +29,7 @@ export default function CalendarPage() {
       const data = await calendarService.getEvents(user.id, filters)
       setEvents(data)
     } catch (error) {
-      console.error('Error loading events:', error)
+      logger.error('Error loading events:', error)
     } finally {
       setIsLoading(false)
     }
@@ -59,7 +60,7 @@ export default function CalendarPage() {
       await calendarService.deleteEvent(id)
       setEvents(events.filter((e) => e.id !== id))
     } catch (error) {
-      console.error('Error deleting event:', error)
+      logger.error('Error deleting event:', error)
     }
   }
 

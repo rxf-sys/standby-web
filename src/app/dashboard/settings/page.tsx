@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { useAuthStore, useThemeStore } from '@/lib/store'
-import { Settings as SettingsIcon, Moon, Sun, Monitor } from 'lucide-react'
+import { Moon, Sun, Monitor } from 'lucide-react'
 import { ThemeMode } from '@/lib/store/theme.store'
 import { ProfileEditDialog } from '@/components/settings/profile-edit-dialog'
 

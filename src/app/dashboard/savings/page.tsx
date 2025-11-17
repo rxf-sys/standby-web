@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Plus } from 'lucide-react'
+import { logger } from '@/lib/services/logger.service'
 import { useAuthStore } from '@/lib/store'
 import { budgetService } from '@/lib/services/budget.service'
 import type { SavingsGoal } from '@/lib/types'
@@ -24,7 +25,7 @@ export default function SavingsPage() {
       const data = await budgetService.getSavingsGoals(user.id)
       setSavingsGoals(data)
     } catch (error) {
-      console.error('Error loading savings goals:', error)
+      logger.error('Error loading savings goals:', error)
     } finally {
       setIsLoading(false)
     }
