@@ -49,7 +49,7 @@ export function SavingsGoalCard({ goal, onEdit, onUpdate }: SavingsGoalCardProps
       })
       setAmount('')
       onUpdate()
-    } catch (error) {
+    } catch {
       toast({
         title: 'Fehler',
         description: 'Betrag konnte nicht hinzugefügt werden.',
@@ -85,7 +85,7 @@ export function SavingsGoalCard({ goal, onEdit, onUpdate }: SavingsGoalCardProps
       })
       setAmount('')
       onUpdate()
-    } catch (error) {
+    } catch {
       toast({
         title: 'Fehler',
         description: 'Betrag konnte nicht abgezogen werden.',
