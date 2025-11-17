@@ -138,7 +138,7 @@ export function SavingsGoalDialog({ open, onOpenChange, goal, onSuccess }: Savin
       })
       onOpenChange(false)
       onSuccess?.()
-    } catch (error) {
+    } catch {
       toast({
         title: 'Fehler',
         description: 'Das Sparziel konnte nicht gelöscht werden.',

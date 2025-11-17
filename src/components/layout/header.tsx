@@ -23,7 +23,7 @@ export function Header() {
         description: 'Bis bald!',
       })
       router.push('/')
-    } catch (error) {
+    } catch {
       toast({
         title: 'Fehler beim Abmelden',
         description: 'Bitte versuche es erneut.',
