@@ -110,9 +110,6 @@ npm test
 # Unit Tests
 npm run test:unit
 
-# Integration Tests
-npm run test:integration
-
 # E2E Tests
 npm run test:e2e
 ```
